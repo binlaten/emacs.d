@@ -1,0 +1,9 @@
+#name : Header
+#contributor : Bin Lai <bin.lai@delphi.com>
+# --
+#+TITLE: ${1:full-title}
+#+AUTHOR: Bin Lai
+#+DATE: ${2:full-date}
+#+EMAIL: bin.lai@delphi.com
+#+OPTIONS: ^:{}
+
