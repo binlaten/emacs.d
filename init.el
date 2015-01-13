@@ -46,16 +46,17 @@
 (require 'init-site-lisp) ;; Must come before elpa, as it may provide package.el
 
 ;; win32 auto configuration, assuming that cygwin is installed at "c:/cygwin"
-(condition-case nil
-    (when *win32*
-      (setq cygwin-mount-cygwin-bin-directory "c:/cygwin/bin")
-      (require 'setup-cygwin)
-      ;; better to set HOME env in GUI
-      ;; (setenv "HOME" "c:/cygwin/home/someuser")
-      )
-  (error
-   (message "setup-cygwin failed, continue anyway")
-   ))
+;; (condition-case nil
+;;     (when *win32*
+;;       ;; (setq cygwin-mount-cygwin-bin-directory "c:/cygwin/bin")
+;;       (setq cygwin-mount-cygwin-bin-directory "c:/cygwin64/bin")
+;;       (require 'setup-cygwin)
+;;       ;; better to set HOME env in GUI
+;;       ;; (setenv "HOME" "c:/cygwin/home/someuser")
+;;       )
+;;   (error
+;;    (message "setup-cygwin failed, continue anyway")
+;;    ))
 
 (require 'idle-require)
 
@@ -97,6 +98,7 @@
 (require 'init-python-mode)
 (require 'init-haskell)
 (require 'init-ruby-mode)
+(require 'init-lisp)
 (require 'init-elisp)
 (if *emacs24* (require 'init-yasnippet))
 ;; Use bookmark instead
@@ -128,7 +130,8 @@
 (require 'init-stripe-buffer)
 (require 'init-eim) ;;  cannot be idle-required
 (require 'init-hs-minor-mode)
-
+;; need statistics of keyfreq asap
+(require 'init-keyfreq)
 
 ;; misc has some crucial tools I need immediately
 (require 'init-misc)
@@ -144,8 +147,6 @@
 
 (setq idle-require-idle-delay 3)
 (setq idle-require-symbols '(init-writting
-                             init-lisp
-                             init-keyfreq
                              init-elnode
                              init-doxygen
                              init-pomodoro
