@@ -54,6 +54,8 @@
         (sdcv-mode . emacs)
         (anaconda-nav-mode . emacs)
         (log-edit-mode . emacs)
+        (vc-log-edit-mode . emacs)
+        (magit-log-edit-mode . emacs)
         (inf-ruby-mode . emacs)
         (direx:direx-mode . emacs)
         (yari-mode . emacs)
@@ -64,8 +66,7 @@
         (eshell-mode . emacs)
         (shell-mode . emacs)
         ;;(message-mode . emacs)
-        (magit-log-edit-mode . insert)
-        (fundamental-mode . insert)
+        (fundamental-mode . emacs)
         (weibo-timeline-mode . emacs)
         (weibo-post-mode . emacs)
         (sr-mode . emacs)
@@ -225,6 +226,7 @@ to replace the symbol under cursor"
   "cd" 'evilcvn-change-symbol-in-defun
   "cb" 'evilcvn-change-symbol-in-whole-buffer
   "yy" 'cb-switch-between-controller-and-view
+  "yu" 'cb-get-url-from-controller
   "tt" 'ido-goto-symbol ;; same as my vim hotkey
   "ht" 'helm-etags-select
   "hm" 'helm-bookmarks
@@ -293,7 +295,7 @@ to replace the symbol under cursor"
   "lo" 'moz-console-log-var
   "lj" 'moz-load-js-file-and-send-it
   "lk" 'latest-kill-to-clipboard
-  "rr" 'moz-console-clear
+  "mr" 'moz-console-clear
   "rnr" 'rinari-web-server-restart
   "rnc" 'rinari-find-controller
   "rnv" 'rinari-find-view
@@ -365,6 +367,7 @@ to replace the symbol under cursor"
   "vr" 'vr/replace
   "vq" 'vr/query-replace
   "vm" 'vr/mc-mark
+  "rr" 'evil-show-registers
   "js" 'w3mext-search-js-api-mdn
   "je" 'js2-display-error-list
   "te" 'js2-mode-toggle-element

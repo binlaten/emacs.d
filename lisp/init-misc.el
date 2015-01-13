@@ -2,9 +2,6 @@
 ;; Some basic preferences
 ;;----------------------------------------------------------------------------
 (setq-default
- blink-cursor-delay 0
- blink-cursor-interval 0.4
- bookmark-default-file "~/.emacs.d/.bookmarks.el"
  buffers-menu-max-size 30
  case-fold-search t
  compilation-scroll-output t
@@ -21,6 +18,10 @@
  truncate-partial-width-windows nil
  ;; no annoying beep on errors
  visible-bell t)
+
+;; use my own bmk if it exists
+(if (file-exists-p (file-truename "~/.emacs.bmk"))
+    (setq bookmark-default-file (file-truename "~/.emacs.bmk")))
 
 (global-auto-revert-mode)
 (setq global-auto-revert-non-file-buffers t
@@ -989,6 +990,7 @@ The full path into relative path insert it as a local file link in org-mode"
 (autoload 'issue-tracker-increment-issue-id-under-cursor "issue-tracker" "" t)
 (autoload 'elpamr-create-mirror-for-installed "elpa-mirror" "" t)
 (autoload 'org2nikola-export-subtree "org2nikola" "" t)
+(autoload 'org2nikola-rerender-published-posts "org2nikola" "" t)
 ;; }}
 
 (setq web-mode-imenu-regexp-list
@@ -1066,7 +1068,9 @@ The full path into relative path insert it as a local file link in org-mode"
 ;; someone mentioned that blink cursor could slow Emacs24.4
 ;; I couldn't care less about cursor, so turn it off explicitly
 ;; https://github.com/redguardtoo/emacs.d/issues/208
-(blink-cursor-mode -1)
+;; but somebody mentioned that blink cursor is needed in dark theme
+;; so it should not be turned off by default
+;; (blink-cursor-mode -1)
 
 ;; https://github.com/browse-kill-ring/browse-kill-ring
 (require 'browse-kill-ring)
