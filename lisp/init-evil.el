@@ -434,5 +434,7 @@ to replace the symbol under cursor"
 (require 'evil-nerd-commenter)
 (evilnc-default-hotkeys)
 ;; }}
+(setq evil-normal-state-cursor '("white" box))
+(setq evil-insert-state-cursor '("red" bar))
 
 (provide 'init-evil)
