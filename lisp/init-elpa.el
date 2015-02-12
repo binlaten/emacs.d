@@ -77,16 +77,23 @@ ARCHIVE is the string name of the package archive.")
 ;; TODO: in half a year, I will remove gnu elpa because emacs 24.3 is the minimum version
 (setq package-archives '(("melpa" . "http://melpa.org/packages/")
                          ("melpa-stable" . "http://stable.melpa.org/packages/")
+                         ;; uncomment below line if you need use GNU ELPA
+                         ;; ("gnu" . "http://elpa.gnu.org/packages/")
                          ))
 
-;; Un-comment below line if you download zip file from https://github.com/redguardtoo/myelpa/archive/master.zip and extract its content into ~/myelpa/
+;; Un-comment below line if you download zip file
+;; from https://github.com/redguardtoo/myelpa/archive/master.zip
+;; and extract its content into ~/myelpa/
 ;; (setq package-archives '(("myelpa" . "~/projs/myelpa")))
 
+;; this is just hack to work around *emacs23* issues
 (if (not *emacs24*) (add-to-list 'package-archives '("localelpa" . "~/.emacs.d/localelpa")))
 
 ;; Or Un-comment below line if you prefer installing package from https://github.com/redguardtoo/myelpa/ directly
 ;; (setq package-archives '(("myelpa" . "https://raw.github.com/redguardtoo/myelpa/master/")))
 
+;; List of VISIBLE packages from melpa-unstable (http://melpa.org)
+;; Feel free to add more packages!
 (defvar melpa-include-packages
   '(bbdb
     json-rpc
@@ -137,14 +144,63 @@ ARCHIVE is the string name of the package archive.")
     project-local-variables
     org-fstree
     textile-mode
-    pretty-mode
     w3m
     fakir
     erlang
     fancy-narrow
     company-c-headers
     company-anaconda
-    anaconda-mode)
+    anaconda-mode
+    ;; make all the color theme packages available
+    afternoon-theme
+    ahungry-theme
+    alect-themes
+    ample-theme
+    ample-zen-theme
+    anti-zenburn-theme
+    atom-dark-theme
+    badger-theme
+    base16-theme
+    basic-theme
+    birds-of-paradise-plus-theme
+    bliss-theme
+    boron-theme
+    bubbleberry-theme
+    busybee-theme
+    calmer-forest-theme
+    cherry-blossom-theme
+    clues-theme
+    colonoscopy-theme
+    color-theme-approximate
+    color-theme-buffer-local
+    color-theme-sanityinc-solarized
+    color-theme-sanityinc-tomorrow
+    color-theme-solarized
+    colorsarenice-theme
+    cyberpunk-theme
+    dakrone-theme
+    darcula-theme
+    dark-krystal-theme
+    darkburn-theme
+    darkmine-theme
+    display-theme
+    distinguished-theme
+    django-theme
+    espresso-theme
+    firebelly-theme
+    firecode-theme
+    flatland-black-theme
+    flatland-theme
+    flatui-theme
+    gandalf-theme
+    gotham-theme
+    grandshell-theme
+    gruber-darker-theme
+    gruvbox-theme
+    hc-zenburn-theme
+    helm-themes
+    hemisu-theme
+    heroku-theme)
   "Don't install any Melpa packages except these packages")
 
 ;; Don't take Melpa versions of certain packages
@@ -203,7 +259,6 @@ ARCHIVE is the string name of the package archive.")
 (require-package 'mic-paren)
 (require-package 'rainbow-delimiters)
 (require-package 'textile-mode)
-(require-package 'pretty-mode)
 (when *emacs24*
   (require-package 'coffee-mode)
   (require-package 'flymake-coffee))
@@ -253,8 +308,7 @@ ARCHIVE is the string name of the package archive.")
 (require-package 'multi-term)
 (require-package 'json-mode)
 (if (and (>= emacs-major-version 24) (>= emacs-minor-version 1))
-    (require-package 'js2-mode '(20140114 0 0) nil)
-  )
+    (require-package 'js2-mode '(20140114 0 0) nil))
 (require-package 'tagedit)
 (require-package 'fancy-narrow)
 (require-package 'sr-speedbar)
@@ -266,13 +320,16 @@ ARCHIVE is the string name of the package archive.")
 (require-package 'string-edit)
 (require-package 'dired-details)
 (require-package 'ag)
-(if *emacs24* (require-package 'git-gutter '(0 71) nil))
 (require-package 'fakir)
 (require-package 'f)
 (require-package 'elnode) ;; elnode dependent on f
 (when *emacs24*
+  (require-package 'git-gutter '(0 71) nil)
+  (require-package 'flx-ido)
+  (require-package 'projectile)
   (require-package 'anaconda-mode)
   (require-package 'company-anaconda))
+
 (require-package 'quack) ;; for scheme
 
 ;; (require-package 'command-frequency)

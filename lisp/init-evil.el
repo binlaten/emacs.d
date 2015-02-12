@@ -4,18 +4,48 @@
 ;; load undo-tree and ert
 (add-to-list 'load-path "~/.emacs.d/site-lisp/evil/lib")
 (require 'evil)
+
+;; @see https://bitbucket.org/lyro/evil/issue/342/evil-default-cursor-setting-should-default
+;; cursor is alway black because of evil
+;; here is the workaround
+(setq evil-default-cursor t)
+
+;; enable evil-mode
 (evil-mode 1)
 
 ;; {{@see https://github.com/timcharper/evil-surround
 (require 'evil-surround)
 (global-evil-surround-mode 1)
-(evil-define-key 'visual evil-surround-mode-map "s" 'evil-substitute)
+;; }}
+
+;; {{ define my own text objects, works on evil v1.0.9 using older method
+;; @see http://stackoverflow.com/questions/18102004/emacs-evil-mode-how-to-create-a-new-text-object-to-select-words-with-any-non-sp
+(defmacro define-and-bind-text-object (key start-regex end-regex)
+  (let ((inner-name (make-symbol "inner-name"))
+        (outer-name (make-symbol "outer-name")))
+    `(progn
+       (evil-define-text-object ,inner-name (count &optional beg end type)
+         (evil-regexp-range count beg end type ,start-regex ,end-regex t))
+       (evil-define-text-object ,outer-name (count &optional beg end type)
+         (evil-regexp-range count beg end type ,start-regex ,end-regex nil))
+       (define-key evil-inner-text-objects-map ,key (quote ,inner-name))
+       (define-key evil-outer-text-objects-map ,key (quote ,outer-name)))))
+
+;; between dollar signs:
+(define-and-bind-text-object "$" "\\$" "\\$")
+;; between pipe characters:
+(define-and-bind-text-object "|" "|" "|")
+;; trimmed line
+(define-and-bind-text-object "l" "^ *" " *$")
+;; angular template
+(define-and-bind-text-object "r" "\{\{" "\}\}")
 ;; }}
 
 ;; {{ https://github.com/syl20bnr/evil-escape
 (require 'evil-escape)
 ;; key-chord is used by evil-escape
-(setq key-chord-two-keys-delay 0.5)
+(setq-default evil-escape-delay 0.5)
+(setq-default evil-escape-key-sequence "kj")
 (evil-escape-mode 1)
 ;; }}
 
@@ -223,9 +253,12 @@ to replace the symbol under cursor"
   ;; "cl" 'evilnc-comment-or-uncomment-to-the-line
   ;; "cc" 'evilnc-copy-and-comment-lines
   ;; "cp" 'evilnc-comment-or-uncomment-paragraphs
+  "epy" 'emmet-expand-yas
+  "epl" 'emmet-expand-line
   "cd" 'evilcvn-change-symbol-in-defun
   "cb" 'evilcvn-change-symbol-in-whole-buffer
   "yy" 'cb-switch-between-controller-and-view
+  "tua" 'artbollocks-mode
   "yu" 'cb-get-url-from-controller
   "tt" 'ido-goto-symbol ;; same as my vim hotkey
   "ht" 'helm-etags-select
@@ -288,6 +321,9 @@ to replace the symbol under cursor"
   "x3" '(lambda () (interactive) (if *emacs23* (split-window-horizontally) (split-window-below)))
   "xu" 'winner-undo
   "to" 'toggle-web-js-offset
+  "cam" 'org-tags-view ;; "C-c a m" search items in org-file-apps by tag
+  "cf" 'helm-for-files ;; "C-c f"
+  "pf" 'projectile-find-file ;; "C-c p f"
   "sl" 'sort-lines
   "ulr" 'uniquify-all-lines-region
   "ulb" 'uniquify-all-lines-buffer
@@ -317,6 +353,7 @@ to replace the symbol under cursor"
   "hss" 'hs-show-block
   "hd" 'describe-function
   "hf" 'find-function
+  "hk" 'describe-key
   "hv" 'describe-variable
   "gt" 'ggtags-find-tag-dwim
   "gr" 'ggtags-find-reference
