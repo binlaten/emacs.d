@@ -122,7 +122,6 @@ ARCHIVE is the string name of the package archive.")
     switch-window
     sr-speedbar
     quack
-    iedit
     legalese
     htmlize
     scratch
@@ -141,13 +140,10 @@ ARCHIVE is the string name of the package archive.")
     auto-compile
     packed
     gitconfig-mode
-    project-local-variables
-    org-fstree
     textile-mode
     w3m
     fakir
     erlang
-    fancy-narrow
     company-c-headers
     company-anaconda
     anaconda-mode
@@ -178,6 +174,7 @@ ARCHIVE is the string name of the package archive.")
     color-theme-solarized
     colorsarenice-theme
     cyberpunk-theme
+    expand-region
     dakrone-theme
     darcula-theme
     dark-krystal-theme
@@ -228,16 +225,16 @@ ARCHIVE is the string name of the package archive.")
 (require-package 'color-theme)
 (require-package 'auto-compile)
 (require-package 'ace-jump-mode)
-(require-package 'expand-region '(0 8 0) nil)
+(require-package 'expand-region nil) ;; use latest version if possible
 (require-package 'fringe-helper)
 (require-package 'haskell-mode '(13 7 0) nil)
 (require-package 'magit '(1 2 0) nil)
 (require-package 'git-commit-mode)
 (require-package 'gitignore-mode)
 (require-package 'gitconfig-mode)
+(require-package 'yagist)
 (require-package 'wgrep)
 (require-package 'lua-mode)
-(require-package 'project-local-variables)
 (require-package 'robe)
 (require-package 'inf-ruby '(2 3 0) nil)
 (require-package 'yaml-mode)
@@ -251,8 +248,9 @@ ARCHIVE is the string name of the package archive.")
 (require-package 'scss-mode)
 (require-package 'markdown-mode)
 (require-package 'dired+)
-(require-package 'maxframe)
-(require-package 'org-fstree)
+(require-package 'link)
+(require-package 'connection)
+(require-package 'dictionary) ; dictionary requires 'link and 'connection
 (require-package 'htmlize)
 (require-package 'diminish)
 (require-package 'scratch)
@@ -260,11 +258,12 @@ ARCHIVE is the string name of the package archive.")
 (require-package 'rainbow-delimiters)
 (require-package 'textile-mode)
 (when *emacs24*
+  (require-package 'swiper)
   (require-package 'coffee-mode)
   (require-package 'flymake-coffee))
 (require-package 'crontab-mode)
 (require-package 'dsvn)
-(require-package 'git-timemachine)
+(require-package 'git-timemachine '(2 3) nil)
 (require-package 'exec-path-from-shell)
 (require-package 'flymake-css)
 (require-package 'flymake-jslint)
@@ -290,13 +289,13 @@ ARCHIVE is the string name of the package archive.")
 (require-package 'unfill)
 (require-package 'w3m)
 (require-package 'idomenu)
-(if *emacs24* (require-package 'ggtags))
+(if *emacs24* (require-package 'ggtags '(0 8 9) nil))
 (require-package 'buffer-move)
 (require-package 'switch-window)
+(require-package 'cmake-mode)
 (require-package 'cpputils-cmake '(0 4 22) nil)
 (require-package 'flyspell-lazy)
 (require-package 'bbdb '(20130421 1145 0) nil)
-(require-package 'iedit)
 (require-package 'pomodoro '(20130114 1543 0) nil)
 (require-package 'flymake-lua)
 (require-package 'dropdown-list)
@@ -310,7 +309,6 @@ ARCHIVE is the string name of the package archive.")
 (if (and (>= emacs-major-version 24) (>= emacs-minor-version 1))
     (require-package 'js2-mode '(20140114 0 0) nil))
 (require-package 'tagedit)
-(require-package 'fancy-narrow)
 (require-package 'sr-speedbar)
 ;; company-mode drop emacs 23 support
 (when (>= emacs-major-version 24)
@@ -324,9 +322,8 @@ ARCHIVE is the string name of the package archive.")
 (require-package 'f)
 (require-package 'elnode) ;; elnode dependent on f
 (when *emacs24*
-  (require-package 'git-gutter '(0 71) nil)
+  (require-package 'git-gutter '(0 82) nil)
   (require-package 'flx-ido)
-  (require-package 'projectile)
   (require-package 'anaconda-mode)
   (require-package 'company-anaconda))
 

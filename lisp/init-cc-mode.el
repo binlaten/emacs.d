@@ -77,7 +77,12 @@
   ;1 (was imposed by gnu style by default)
   (setq c-label-minimum-indentation 0)
 
+  (autoload 'c-turn-on-eldoc-mode "c-eldoc" "" t)
+
   (when buffer-file-name
+    ;; c-eldoc (https://github.com/mooz/c-eldoc)
+    (c-turn-on-eldoc-mode)
+
     ;; @see https://github.com/seanfisk/cmake-flymake
     ;; make sure you project use cmake
     (flymake-mode 1)
@@ -104,7 +109,12 @@
               (setq gtags-suggested-key-mapping t)
               (unless (derived-mode-p 'java-mode)
                 (my-c-mode-hook))
-              (if *emacs24* (ggtags-mode 1))
+              (when *emacs24*
+                ;; ggtags.el only supports emacs24
+                (ggtags-mode 1)
+                ;; emacs 24.4+ will set up eldoc automatically.
+                ;; so below code is NOT needed.
+                (setq-local eldoc-documentation-function #'ggtags-eldoc-function))
               )))
 
 (provide 'init-cc-mode)
