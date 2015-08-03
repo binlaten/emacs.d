@@ -1,3 +1,5 @@
+.depend
+pyim/
 .wg-file.el
 /url/cache
 /.emacs.desktop
@@ -46,3 +48,4 @@ history
 recentf
 places
 ido.last
+projectile.cache

@@ -35,6 +35,7 @@
 
 (require 'flyspell-lazy)
 (flyspell-lazy-mode 1)
+
 ;; better performance
 (setq flyspell-issue-message-flag nil)
 
@@ -59,6 +60,25 @@
          (setq args nil))))
     args
     ))
+
+;; Aspell Setup (recommended):
+;; Skipped because it's easy.
+;;
+;; Hunspell Setup:
+;; 1. Install hunspell from http://hunspell.sourceforge.net/
+;; 2. Download openoffice dictionary extension from
+;; http://extensions.openoffice.org/en/project/english-dictionaries-apache-openoffice
+;; 3. That is download `dict-en.oxt'. Rename that to `dict-en.zip' and unzip
+;; the contents to a temporary folder.
+;; 4. Copy `en_US.dic' and `en_US.aff' files from there to a folder where you
+;; save dictionary files; I saved it to `~/usr_local/share/hunspell/'
+;; 5. Add that path to shell env variable `DICPATH':
+;; setenv DICPATH $MYLOCAL/share/hunspell
+;; 6. Restart emacs so that when hunspell is run by ispell/flyspell, that env
+;; variable is effective.
+;;
+;; hunspell will search for a dictionary called `en_US' in the path specified by
+;; `$DICPATH'
 
 (cond
  ((executable-find "aspell")
@@ -85,29 +105,30 @@
     (ispell-kill-ispell t)
     ))
 
-;;----------------------------------------------------------------------------
 ;; Add spell-checking in comments for all programming language modes
-;;----------------------------------------------------------------------------
-(dolist (hook '(lisp-mode-hook
-                emacs-lisp-mode-hook
-                scheme-mode-hook
-                clojure-mode-hook
-                ruby-mode-hook
-                yaml-mode
-                python-mode-hook
-                shell-mode-hook
-                php-mode-hook
-                css-mode-hook
-                haskell-mode-hook
-                caml-mode-hook
-                c++-mode-hook
-                c-mode-hook
-                lua-mode-hook
-                crontab-mode-hook
-                perl-mode-hook
-                tcl-mode-hook
-                js2-mode-hook))
-  (add-hook hook 'flyspell-prog-mode))
+;; if and only if there is enough memory
+(unless *no-memory*
+  (dolist (hook '(lisp-mode-hook
+                   emacs-lisp-mode-hook
+                   scheme-mode-hook
+                   clojure-mode-hook
+                   ruby-mode-hook
+                   yaml-mode
+                   python-mode-hook
+                   shell-mode-hook
+                   php-mode-hook
+                   css-mode-hook
+                   haskell-mode-hook
+                   caml-mode-hook
+                   c++-mode-hook
+                   c-mode-hook
+                   lua-mode-hook
+                   crontab-mode-hook
+                   perl-mode-hook
+                   tcl-mode-hook
+                   js2-mode-hook))
+    (add-hook hook 'flyspell-prog-mode)))
+
 
 ;; you can also use "M-x ispell-word" or hotkey "M-$". It pop up a multiple choice
 ;; @see http://frequal.com/Perspectives/EmacsTip03-FlyspellAutoCorrectWord.html
