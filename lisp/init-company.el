@@ -18,6 +18,10 @@
 
 (eval-after-load 'company
   '(progn
+     ;; @see https://github.com/company-mode/company-mode/issues/348
+     (require 'company-statistics)
+     (company-statistics-mode)
+
      (add-to-list 'company-backends 'company-cmake)
      (add-to-list 'company-backends 'company-c-headers)
      ;; can't work with TRAMP
@@ -31,5 +35,8 @@
      (setq company-idle-delay 0.2)
      (setq company-clang-insert-arguments nil)
      ))
+
+;; company should be case sensitive
+(setq company-dabbrev-downcase nil)
 
 (provide 'init-company)

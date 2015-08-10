@@ -33,8 +33,10 @@
 
 (put 'web-mode 'flyspell-mode-predicate 'web-mode-flyspell-verify)
 
-(require 'flyspell-lazy)
-(flyspell-lazy-mode 1)
+(eval-after-load 'flyspell
+  '(progn
+     (require 'flyspell-lazy)
+     (flyspell-lazy-mode 1)))
 
 ;; better performance
 (setq flyspell-issue-message-flag nil)
@@ -90,7 +92,8 @@
   (setq ispell-local-dictionary "en_US")
   (setq ispell-local-dictionary-alist
         '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil nil nil utf-8))))
- (t (setq ispell-program-name nil)))
+ (t (setq ispell-program-name nil)
+    (message "You need install either aspell or hunspell for ispell")))
 
 ;; ispell-cmd-args is useless, it's the list of *extra* command line arguments we will append to the ispell process when ispell-send-string()
 ;; ispell-extra-args is the command arguments which will *always* be used when start ispell process
@@ -99,34 +102,48 @@
 (defadvice ispell-word (around my-ispell-word activate)
   (let ((old-ispell-extra-args ispell-extra-args))
     (ispell-kill-ispell t)
+    ;; use emacs original arguments
     (setq ispell-extra-args (flyspell-detect-ispell-args))
     ad-do-it
+    ;; restore our own ispell arguments
     (setq ispell-extra-args old-ispell-extra-args)
     (ispell-kill-ispell t)
     ))
 
-;; Add spell-checking in comments for all programming language modes
+(defadvice flyspell-auto-correct-word (around my-flyspell-auto-correct-word activate)
+  (let ((old-ispell-extra-args ispell-extra-args))
+    (ispell-kill-ispell t)
+    ;; use emacs original arguments
+    (setq ispell-extra-args (flyspell-detect-ispell-args))
+    ad-do-it
+    ;; restore our own ispell arguments
+    (setq ispell-extra-args old-ispell-extra-args)
+    (ispell-kill-ispell t)
+    ))
+
+;; Add auto spell-checking in comments for all programming language modes
 ;; if and only if there is enough memory
-(unless *no-memory*
+;; You can use prog-mode-hook instead.
+(if (and (not *no-memory*) ispell-program-name)
   (dolist (hook '(lisp-mode-hook
-                   emacs-lisp-mode-hook
-                   scheme-mode-hook
-                   clojure-mode-hook
-                   ruby-mode-hook
-                   yaml-mode
-                   python-mode-hook
-                   shell-mode-hook
-                   php-mode-hook
-                   css-mode-hook
-                   haskell-mode-hook
-                   caml-mode-hook
-                   c++-mode-hook
-                   c-mode-hook
-                   lua-mode-hook
-                   crontab-mode-hook
-                   perl-mode-hook
-                   tcl-mode-hook
-                   js2-mode-hook))
+                  emacs-lisp-mode-hook
+                  scheme-mode-hook
+                  clojure-mode-hook
+                  ruby-mode-hook
+                  yaml-mode
+                  python-mode-hook
+                  shell-mode-hook
+                  php-mode-hook
+                  css-mode-hook
+                  haskell-mode-hook
+                  caml-mode-hook
+                  c++-mode-hook
+                  c-mode-hook
+                  lua-mode-hook
+                  crontab-mode-hook
+                  perl-mode-hook
+                  tcl-mode-hook
+                  js2-mode-hook))
     (add-hook hook 'flyspell-prog-mode)))
 
 
