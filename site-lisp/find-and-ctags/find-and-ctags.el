@@ -50,7 +50,7 @@
 
 (defvar fctags-auto-update-tags-interval 600
   "The interval to update TAGS. It's used by fctags-auto-update-tags and in seconds format.
- Default value is 600 which equals 5 minutes.")
+ Default value is 600 which equals 10 minutes.")
 
 (defvar fctags-gnu-find-executable nil
   "The path of GNU Find. If it's nil, it will be automatically detected.")
@@ -136,6 +136,7 @@
                         ctags-exe
                         CTAGS-OPTS))
       (puthash file (list FIND-OPTS CTAGS-OPTS t) fctags-cli-opts-hash)
+      (message "find-and-ctags running shell command: %s" cmd)
       (shell-command cmd)
       ;; restore default-directory
       (cd old-dir))
@@ -173,7 +174,6 @@
 (defun fctags-auto-update-tags()
   (interactive)
   (cond
-
    ((not fctags-updated-timer)
     (setq fctags-updated-timer (current-time)))
 
