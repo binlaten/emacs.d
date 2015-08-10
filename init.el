@@ -1,3 +1,4 @@
+
 ;; -*- coding: utf-8 -*-
 (setq emacs-load-start-time (current-time))
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/lisp"))
@@ -15,7 +16,6 @@
 (setq *unix* (or *linux* (eq system-type 'usg-unix-v) (eq system-type 'berkeley-unix)) )
 (setq *linux-x* (and window-system *linux*) )
 (setq *xemacs* (featurep 'xemacs) )
-(setq *emacs23* (and (not *xemacs*) (or (>= emacs-major-version 23))) )
 (setq *emacs24* (and (not *xemacs*) (or (>= emacs-major-version 24))) )
 (setq *no-memory* (cond
                    (*is-a-mac*
@@ -26,22 +26,19 @@
 ;;----------------------------------------------------------------------------
 ;; Less GC, more memory
 ;;----------------------------------------------------------------------------
-;; By default Emacs will initiate GC every 0.76 MB allocated
-;; (gc-cons-threshold == 800000).
-;; we increase this to 512MB
-;; @see http://www.gnu.org/software/emacs/manual/html_node/elisp/Garbage-Collection.html
-(setq-default gc-cons-threshold (* 1024 1024 512)
-              gc-cons-percentage 0.5)
+(defun my-optimize-gc (NUM PER)
+"By default Emacs will initiate GC every 0.76 MB allocated (gc-cons-threshold == 800000).
+@see http://www.gnu.org/software/emacs/manual/html_node/elisp/Garbage-Collection.html
+We increase this to 16MB by `(my-optimize-gc 16 0.5)` "
+  (setq-default gc-cons-threshold (* 1024 1024 NUM)
+                gc-cons-percentage PER))
+
 
 (require 'init-modeline)
 (require 'cl-lib)
 (require 'init-compat)
 (require 'init-utils)
 (require 'init-site-lisp) ;; Must come before elpa, as it may provide package.el
-
-;; my personal setup, other major-mode specific setup need it.
-;; It's dependent on init-site-lisp.el
-(if (file-exists-p "~/.custom.el") (load-file "~/.custom.el"))
 
 ;; win32 auto configuration, assuming that cygwin is installed at "c:/cygwin"
 ;; (condition-case nil
@@ -71,7 +68,7 @@
 (require 'init-ibuffer)
 (require 'init-flymake)
 (require 'init-smex)
-(if *emacs24* (require 'init-helm))
+(require 'init-helm)
 (require 'init-hippie-expand)
 (require 'init-windows)
 (require 'init-sessions)
@@ -80,16 +77,15 @@
 (require 'init-markdown)
 (require 'init-erlang)
 (require 'init-javascript)
-(when *emacs24*
-  (require 'init-org)
-  (require 'init-org-mime))
+(require 'init-org)
+(require 'init-org-mime)
 (require 'init-css)
 (require 'init-python-mode)
 (require 'init-haskell)
 (require 'init-ruby-mode)
 (require 'init-lisp)
 (require 'init-elisp)
-(if *emacs24* (require 'init-yasnippet))
+(require 'init-yasnippet)
 ;; Use bookmark instead
 (require 'init-zencoding-mode)
 (require 'init-cc-mode)
@@ -102,7 +98,6 @@
 (require 'init-evil)
 (require 'init-sh)
 (require 'init-ctags)
-(require 'init-ace-jump-mode)
 (require 'init-bbdb)
 (require 'init-gnus)
 (require 'init-lua-mode)
@@ -111,10 +106,11 @@
 (require 'init-web-mode)
 (require 'init-slime)
 (require 'init-clipboard)
-(when *emacs24* (require 'init-company))
+(require 'init-company)
 (require 'init-chinese-pyim) ;; cannot be idle-required
 ;; need statistics of keyfreq asap
 (require 'init-keyfreq)
+(require 'init-httpd)
 
 ;; projectile costs 7% startup time
 
@@ -128,13 +124,11 @@
 (setq idle-require-symbols '(init-misc-lazy
                              init-which-func
                              init-fonts
-                             init-sr-speedbar
                              init-hs-minor-mode
                              init-stripe-buffer
                              init-textile
                              init-csv
                              init-writting
-                             init-elnode
                              init-doxygen
                              init-pomodoro
                              init-emacspeak
@@ -151,6 +145,10 @@
 ;; Locales (setting them earlier in this file doesn't work in X)
 ;;----------------------------------------------------------------------------
 (require 'init-locales)
+
+;; my personal setup, other major-mode specific setup need it.
+;; It's dependent on init-site-lisp.el
+(if (file-exists-p "~/.custom.el") (load-file "~/.custom.el"))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.

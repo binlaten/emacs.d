@@ -3,6 +3,9 @@
       w3m-file-name-coding-system 'utf-8
       w3m-input-coding-system 'utf-8
       w3m-output-coding-system 'utf-8
+      ;; emacs-w3m will test the imagick's support for png32
+      ;; and create files named "png32:-" everywhere
+      w3m-imagick-convert-program nil
       w3m-terminal-coding-system 'utf-8
       w3m-use-cookies t
       w3m-cookie-accept-bad-cookies t
@@ -15,6 +18,7 @@
       ;; show images in the browser
       ;; setq w3m-default-display-inline-images t
       ;; w3m-use-tab     nil
+      w3m-confirm-leaving-secure-page nil
       w3m-search-default-engine "g"
       w3m-key-binding 'info)
 
@@ -37,6 +41,10 @@
         ("w" "http://en.wikipedia.org/wiki/Special:Search?search=%s" utf-8)
         ;; online dictionary
         ("d" "http://dictionary.reference.com/search?q=%s" utf-8)
+        ;; java google search
+        ("java" "https://www.google.com.au/search?q=java+%s" utf-8)
+        ;; financial dictionary
+        ("f" "http://financial-dictionary.thefreedictionary.com/%s" utf-8)
         ;; javascript seawrch on mozilla.org
         ("j" "http://www.google.com.au/search?q=%s+site:developer.mozilla.org" utf-8)))
 
@@ -62,6 +70,10 @@
   (interactive)
   (w3m-customized-search-api "q"))
 
+(defun w3m-java-search ()
+  (interactive)
+  (w3m-customized-search-api "java"))
+
 (defun w3m-google-by-filetype ()
   "Google search 'keyword filetype:file-extension'"
   (interactive)
@@ -79,6 +91,11 @@
     (w3m-customized-search-api "s")
     ;; restore the default url
     (w3m-set-url-from-search-engine-alist "s" w3m-search-engine-alist old-url)))
+
+(defun w3m-search-financial-dictionary ()
+  "Search financial dictionary"
+  (interactive)
+  (w3m-customized-search-api "f"))
 
 (defun w3m-search-js-api-mdn ()
   "Search at Mozilla Developer Network (MDN)"
