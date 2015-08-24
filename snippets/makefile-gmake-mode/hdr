@@ -1,0 +1,16 @@
+#name : Makefile Header
+#contributor : Bin Lai <bin.lai@delphi.com>
+# --
+# ====================================================================
+#
+#     Description:  ${1: description}
+#
+#         Created:  ${2: full-date}
+#        Compiler:  ${3: compiler, version}
+#      Dependence:  ${4: dependent tool, version}
+#
+#          Author:  Bin Lai, bin.lai@delphi.com
+#         License:  GNU General Public License
+#       Copyright:  Copyright (c) 2015, Dephi CTC inc.
+#
+# ====================================================================
